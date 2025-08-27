@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Money Manager</title>
+    <!-- Link to Google Fonts for a sleek, modern font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Link to the external stylesheet -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Main container for the two-column layout -->
+    <div class="container">
+        <!-- The left-side panel that displays the financial summary -->
+        <aside class="summary-panel">
+            <header>
+                <h1>Money Manager</h1>
+            </header>
+            <section id="summary">
+                <h2>Financial Summary</h2>
+                <div class="summary-cards">
+                    <!-- Card for Total Income -->
+                    <div class="card income-card">
+                        <h3>Total Income</h3>
+                        <p id="total-income">₹0.00</p>
+                    </div>
+                    <!-- Card for Total Expenses -->
+                    <div class="card expense-card">
+                        <h3>Total Expenses</h3>
+                        <p id="total-expenses">₹0.00</p>
+                    </div>
+                    <!-- Card for Net Balance -->
+                    <div class="card balance-card">
+                        <h3>Net Balance</h3>
+                        <p id="net-balance">₹0.00</p>
+                    </div>
+                </div>
+            </section>
+        </aside>
+
+        <!-- The right-side main content area for transactions -->
+        <main class="main-content">
+            <header>
+                <!-- Invisible placeholder to maintain spacing -->
+                <div style="visibility:hidden"></div>
+                <!-- Button to open the "Add New Transaction" modal -->
+                <button id="add-transaction-btn" class="btn primary">Add New Transaction</button>
+            </header>
+
+            <!-- Transaction History Section -->
+            <section id="transaction-history">
+                <h2>Transaction History</h2>
+                <!-- Controls for filtering and sorting the transactions -->
+                <div class="transaction-controls">
+                    <select id="category-filter">
+                        <option value="all">All Categories</option>
+                        <option value="income">Income</option>
+                        <option value="expense">Expense</option>
+                    </select>
+                    <input type="date" id="date-filter">
+                    <select id="sort-option">
+                        <option value="date-desc">Date (Newest)</option>
+                        <option value="date-asc">Date (Oldest)</option>
+                        <option value="amount-desc">Amount (High)</option>
+                        <option value="amount-asc">Amount (Low)</option>
+                    </select>
+                </div>
+                <!-- Table to display the transaction data -->
+                <table class="transaction-table">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Category</th>
+                            <th>Sub-Category</th>
+                            <th>Description</th>
+                            <th>Amount</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="transaction-table-body">
+                        <!-- Transaction rows will be dynamically inserted here by JavaScript -->
+                    </tbody>
+                </table>
+            </section>
+        </main>
+    </div>
+
+    <!-- The Modal that appears for adding or editing a transaction -->
+    <div id="transaction-modal" class="modal-overlay">
+        <div class="modal-content">
+            <!-- Close button for the modal -->
+            <span class="close-btn">&times;</span>
+            <form id="transaction-form">
+                <h2 id="modal-title">Add Transaction</h2>
+                <!-- Hidden input field to store the transaction ID for editing -->
+                <input type="hidden" id="transaction-id">
+                
+                <!-- Input group for Amount -->
+                <div class="form-group">
+                    <label for="amount">Amount:</label>
+                    <input type="number" id="amount" required step="0.01">
+                    <div class="error" id="amount-error"></div>
+                </div>
+                
+                <!-- Input group for Date -->
+                <div class="form-group">
+                    <label for="date">Date:</label>
+                    <input type="date" id="date" required>
+                    <div class="error" id="date-error"></div>
+                </div>
+                
+                <!-- Input group for Category (radio buttons) -->
+                <div class="form-group">
+                    <label>Category:</label>
+                    <div>
+                        <input type="radio" id="radio-income" name="type" value="income" required>
+                        <label for="radio-income">Income</label>
+                        <input type="radio" id="radio-expense" name="type" value="expense" required>
+                        <label for="radio-expense">Expense</label>
+                    </div>
+                    <div class="error" id="category-error"></div>
+                </div>
+                
+                <!-- Input group for Sub-Category (dynamic dropdown) -->
+                <div class="form-group">
+                    <label for="sub-category">Sub-Category:</label>
+                    <select id="sub-category" required>
+                        <option value="">Select a sub-category</option>
+                    </select>
+                    <div class="error" id="sub-category-error"></div>
+                </div>
+                
+                <!-- Input group for Description -->
+                <div class="form-group">
+                    <label for="description">Description:</label>
+                    <textarea id="description" placeholder="Optional description..." maxlength="100"></textarea>
+                </div>
+                
+                <!-- Submit button for the form -->
+                <button type="submit" class="btn primary" id="save-btn">Save Transaction</button>
+            </form>
+        </div>
+    </div>
+    <!-- Link to localForage library for robust local storage -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/localforage/1.10.0/localforage.min.js"></script>
+    <!-- Link to the custom JavaScript file -->
+    <script src="script.js"></script>
+</body>
+</html>

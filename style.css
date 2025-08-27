@@ -1,0 +1,391 @@
+/* CSS Variables for a pink, beige, and white aesthetic */
+:root {
+    --primary-color: #FFB6C1; /* Light Pink for income */
+    --secondary-color: #DDA0DD; /* Plum/Lavender for balance */
+    --danger-color: #FF69B4; /* Hot Pink for expenses */
+    --background-dark: #F5F5DC; /* Beige main background */
+    --background-medium: #FDF5E6; /* Off-white for sections */
+    --background-light: #FFFAF0; /* Floral white for inputs and buttons */
+    --text-light: #333333; /* Dark charcoal for main text */
+    --text-muted: #8B4513; /* Saddle Brown for muted text */
+    --border-color: #D2B48C; /* Tan for borders */
+    --transition-speed: 0.3s;
+}
+
+/* General Styles applied to all elements */
+* {
+    box-sizing: border-box;
+    font-family: 'Inter', sans-serif;
+}
+
+/* Body styling for the main page background and text color */
+body {
+    background-color: var(--background-dark);
+    color: var(--text-light);
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    justify-content: center; /* Center content horizontally */
+    align-items: flex-start;
+    min-height: 100vh;
+}
+
+/* Main container for the two-column layout using flexbox */
+.container {
+    width: 100%;
+    max-width: 1400px;
+    display: flex;
+    gap: 30px;
+    padding: 0;
+    background: none;
+    box-shadow: none;
+}
+
+/* Styles for the left-side summary panel */
+.summary-panel {
+    flex: 0 0 350px; /* Fixed width side panel */
+    background-color: var(--background-medium);
+    border-radius: 12px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+    position: sticky; /* Keeps it visible as you scroll */
+    top: 20px;
+    align-self: flex-start;
+    height: fit-content;
+}
+
+/* Styles for the right-side main content area */
+.main-content {
+    flex: 1; /* Takes up the remaining space */
+    background-color: var(--background-medium);
+    border-radius: 12px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+/* Header styling, common to both panels */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 20px;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 2.5rem;
+    color: var(--text-light); /* Changed to text-light for better contrast */
+    font-weight: 600;
+}
+
+/* General button styling */
+.btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: transform var(--transition-speed), box-shadow var(--transition-speed);
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.btn.primary {
+    background-color: var(--danger-color);
+    color: white;
+}
+
+.btn.primary:hover {
+    background-color: #FF1493;
+}
+
+.btn.danger {
+    background-color: var(--danger-color);
+    color: white;
+}
+
+.btn.danger:hover {
+    background-color: #FF1493;
+}
+
+.btn.secondary {
+    background-color: var(--background-light);
+    color: var(--text-light);
+    border: 1px solid var(--border-color);
+}
+
+.btn.secondary:hover {
+    background-color: #F8F8FF;
+}
+
+/* Dashboard section styling */
+.dashboard-section {
+    background-color: #FFFFFF;
+    border-radius: 10px;
+    padding: 25px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+h2 {
+    margin-top: 0;
+    margin-bottom: 20px;
+    font-size: 1.8rem;
+    font-weight: 500;
+    color: var(--text-muted);
+}
+
+/* Styles for the summary cards */
+.summary-cards {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column; /* Stack cards vertically in the side panel */
+    gap: 20px;
+    justify-content: space-between;
+}
+
+.card {
+    flex: 1;
+    width: 100%;
+    padding: 25px;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    transition: transform var(--transition-speed);
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
+.card h3 {
+    margin: 0 0 10px;
+    font-size: 1.1rem;
+    font-weight: 400;
+    color: var(--text-muted);
+}
+
+.card p {
+    margin: 0;
+    font-size: 2.5rem;
+    font-weight: 600;
+}
+
+.income-card { background-color: #FFF5EE; border-left: 5px solid var(--primary-color); }
+.income-card p { color: var(--primary-color); }
+
+.expense-card { background-color: #FFF0F5; border-left: 5px solid var(--danger-color); }
+.expense-card p { color: var(--danger-color); }
+
+.balance-card { background-color: #F0F8FF; border-left: 5px solid var(--secondary-color); }
+.balance-card p { color: var(--secondary-color); }
+
+/* Styles for the transaction table controls and table itself */
+.transaction-controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-bottom: 20px;
+    align-items: center;
+}
+
+.transaction-controls select,
+.transaction-controls input[type="date"] {
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    background-color: var(--background-light);
+    color: var(--text-light);
+    font-size: 0.9rem;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    cursor: pointer;
+    transition: border-color var(--transition-speed);
+}
+
+.transaction-controls select:focus,
+.transaction-controls input[type="date"]:focus {
+    outline: none;
+    border-color: var(--primary-color);
+}
+
+.transaction-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.95rem;
+}
+
+.transaction-table th,
+.transaction-table td {
+    padding: 15px;
+    text-align: left;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.transaction-table th {
+    text-transform: uppercase;
+    font-weight: 600;
+    color: var(--text-muted);
+}
+
+.transaction-table tbody tr:hover {
+    background-color: rgba(0, 0, 0, 0.03);
+}
+
+/* Text color for amount based on transaction type */
+.transaction-amount.income { color: var(--primary-color); }
+.transaction-amount.expense { color: var(--danger-color); }
+.transaction-amount { font-weight: 500; }
+
+.action-buttons .btn {
+    font-size: 0.8rem;
+    padding: 6px 12px;
+}
+
+/* Styles for the modal overlay and content */
+.modal-overlay {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+    justify-content: center;
+    align-items: center;
+    backdrop-filter: blur(3px);
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+.modal-content {
+    background-color: var(--background-medium);
+    padding: 30px;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 500px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+    position: relative;
+    animation: slideIn 0.3s ease-in-out;
+}
+
+.close-btn {
+    color: var(--text-muted);
+    font-size: 2rem;
+    font-weight: bold;
+    position: absolute;
+    top: 15px;
+    right: 25px;
+    cursor: pointer;
+    transition: color var(--transition-speed);
+}
+
+.close-btn:hover {
+    color: var(--primary-color);
+}
+
+/* Form styling within the modal */
+form h2 {
+    text-align: center;
+    color: var(--primary-color);
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: var(--text-muted);
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    background-color: var(--background-light);
+    color: var(--text-light);
+    font-size: 1rem;
+    transition: border-color var(--transition-speed), box-shadow var(--transition-speed);
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 5px rgba(255, 182, 193, 0.5);
+}
+
+.form-group textarea {
+    resize: vertical;
+    min-height: 80px;
+}
+
+.form-group .error {
+    color: var(--danger-color);
+    font-size: 0.8rem;
+    margin-top: 5px;
+    min-height: 1.2em;
+}
+
+.form-group input.invalid, .form-group select.invalid, .form-group textarea.invalid {
+    border-color: var(--danger-color);
+}
+
+/* CSS Animations for a smooth user experience */
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes slideIn { from { transform: translateY(-30px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+
+/* Responsive Design for various screen sizes */
+/* This media query applies when the screen width is 992px or less (e.g., tablets) */
+@media (max-width: 992px) {
+    /* Change the main layout to a single column */
+    .container {
+        flex-direction: column;
+        gap: 20px;
+    }
+    /* The summary panel is no longer sticky */
+    .summary-panel {
+        position: static;
+    }
+}
+
+/* This media query applies when the screen width is 768px or less (e.g., mobile devices) */
+@media (max-width: 768px) {
+    body { padding: 10px; }
+    /* Reduce padding on the main content and summary panels */
+    .main-content, .summary-panel { padding: 20px; }
+    /* Change header to a column layout to stack elements */
+    header { flex-direction: column; align-items: flex-start; gap: 15px; }
+    header h1 { font-size: 2rem; }
+    /* Change summary cards to a row layout for better mobile display */
+    .summary-cards { flex-direction: row; flex-wrap: wrap; }
+    .card { min-width: unset; }
+    /* Stack transaction controls in a column */
+    .transaction-controls { flex-direction: column; align-items: stretch; }
+    .transaction-table { font-size: 0.85rem; }
+    .transaction-table th, .transaction-table td { padding: 10px; }
+}
+
+/* This new media query applies to very small mobile devices */
+@media (max-width: 475px) {
+    body { padding: 5px; }
+    .main-content, .summary-panel { padding: 15px; }
+    .transaction-table { font-size: 0.75rem; }
+    .transaction-table th, .transaction-table td { padding: 8px; }
+    .btn { padding: 8px 16px; font-size: 0.8rem; }
+}
