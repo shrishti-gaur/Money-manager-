@@ -381,11 +381,58 @@ form h2 {
     .transaction-table th, .transaction-table td { padding: 10px; }
 }
 
-/* This new media query applies to very small mobile devices */
+/* This new media query transforms the table for very small mobile devices */
 @media (max-width: 475px) {
     body { padding: 5px; }
     .main-content, .summary-panel { padding: 15px; }
-    .transaction-table { font-size: 0.75rem; }
-    .transaction-table th, .transaction-table td { padding: 8px; }
     .btn { padding: 8px 16px; font-size: 0.8rem; }
+
+    /* Table Transformation */
+    .transaction-table {
+        border: 0; /* Remove main table border */
+        font-size: 0.9rem; /* Slightly larger font for readability */
+    }
+
+    /* Hide table headers (thead) */
+    .transaction-table thead {
+        display: none;
+    }
+
+    /* Make table rows and cells display as blocks to create cards */
+    .transaction-table tr {
+        display: block;
+        margin-bottom: 1rem;
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+        background-color: var(--background-light);
+        padding: 1rem;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    }
+    
+    /* Make table cells display as blocks and add custom labels */
+    .transaction-table td {
+        display: block;
+        text-align: right; /* Align value to the right */
+        border-bottom: 1px dashed var(--border-color); /* Use a dashed border for a subtle line */
+        padding: 0.5rem 0; /* Add top/bottom padding */
+    }
+    
+    /* Remove the last border from each card */
+    .transaction-table tr td:last-child {
+        border-bottom: 0;
+        text-align: left; /* Align buttons to the left */
+        padding-top: 1rem;
+    }
+
+    /* Use ::before pseudo-element to create labels for each data point */
+    .transaction-table td::before {
+        content: attr(data-label);
+        float: left;
+        font-weight: 600;
+        color: var(--text-muted);
+        text-transform: uppercase;
+        font-size: 0.75rem;
+        padding-right: 1rem; /* Added padding to separate label from value */
+    }
 }
+
