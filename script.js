@@ -1,5 +1,5 @@
 // script.js
-// Constant for local storage key to ensure consistency
+// Use a robust key for localforage to avoid conflicts
 const DB_KEY = 'moneyManager_transactions';
 
 /**
@@ -7,14 +7,6 @@ const DB_KEY = 'moneyManager_transactions';
  * This class encapsulates the data for a transaction.
  */
 class Transaction {
-    /**
-     * @param {number} id - Unique identifier for the transaction.
-     * @param {number|string} amount - The amount of the transaction.
-     * @param {string} date - The date of the transaction (YYYY-MM-DD format).
-     * @param {string} category - The transaction category ('income' or 'expense').
-     * @param {string} subCategory - The specific sub-category.
-     * @param {string} description - A short description of the transaction.
-     */
     constructor(id, amount, date, category, subCategory, description) {
         this.id = id;
         this.amount = parseFloat(amount);
@@ -43,18 +35,17 @@ class MoneyManager {
      */
     async loadInitialData() {
         try {
-            // Retrieve stored data from localForage, a robust local storage library
             const storedTransactions = await localforage.getItem(DB_KEY);
             if (storedTransactions) {
-                // Rehydrate the data into Transaction objects to restore class functionality
+                // Rehydrate the data into Transaction objects
                 this.transactions = storedTransactions.map(t => new Transaction(t.id, t.amount, t.date, t.category, t.subCategory, t.description));
-                // Set the nextId based on the highest existing ID to avoid conflicts
+                // Set the nextId based on the highest existing ID
                 this.nextId = this.transactions.length > 0 ? Math.max(...this.transactions.map(t => t.id)) + 1 : 1;
             }
         } catch (error) {
             console.error("Failed to load data from local storage:", error);
         }
-        // Always render the UI and update the summary after loading is complete
+        // Always render and update summary after loading
         this.renderTransactions();
         this.updateSummary();
     }
@@ -76,7 +67,6 @@ class MoneyManager {
      * @param {Object} formData - The data from the transaction form.
      */
     addTransaction(formData) {
-        // Create a new Transaction object with a unique ID
         const newTransaction = new Transaction(
             this.nextId++,
             formData.amount,
@@ -118,7 +108,8 @@ class MoneyManager {
      * @param {number} id - The ID of the transaction to delete.
      */
     deleteTransaction(id) {
-        // Note: A custom modal UI would be used in a production environment
+        // NOTE: We're using a simple confirmation for demonstration.
+        // In a real app, a custom modal UI would be used.
         if (window.confirm("Are you sure you want to delete this transaction?")) {
             this.transactions = this.transactions.filter(t => t.id !== id);
             this.saveTransactions();
@@ -132,16 +123,16 @@ class MoneyManager {
      */
     renderTransactions() {
         const tableBody = document.getElementById('transaction-table-body');
-        tableBody.innerHTML = ''; // Clear existing table rows
+        tableBody.innerHTML = ''; // Clear table
         
-        // Get filter and sort values from the UI
+        // Get filter and sort values
         const categoryFilter = document.getElementById('category-filter').value;
         const dateFilter = document.getElementById('date-filter').value;
         const sortOption = document.getElementById('sort-option').value;
         
         let filteredAndSorted = [...this.transactions];
         
-        // Apply Filters based on user selection
+        // Apply Filters
         if (categoryFilter !== 'all') {
             filteredAndSorted = filteredAndSorted.filter(t => t.category === categoryFilter);
         }
@@ -149,7 +140,7 @@ class MoneyManager {
             filteredAndSorted = filteredAndSorted.filter(t => t.date === dateFilter);
         }
         
-        // Apply Sorting based on user selection
+        // Apply Sorting
         filteredAndSorted.sort((a, b) => {
             switch (sortOption) {
                 case 'date-asc':
@@ -161,28 +152,26 @@ class MoneyManager {
                 case 'amount-desc':
                     return b.amount - a.amount;
                 default:
-                    return 0; // No sorting if option is not recognized
+                    return 0;
             }
         });
         
         if (filteredAndSorted.length === 0) {
-            // Display a message if no transactions are found
             tableBody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: var(--text-muted); padding: 20px;">No transactions to display.</td></tr>`;
             return;
         }
 
-        // Generate and append a table row for each transaction
         filteredAndSorted.forEach(transaction => {
             const row = tableBody.insertRow();
-            row.dataset.id = transaction.id; // Store ID on the row for easy access
+            row.dataset.id = transaction.id;
             const amountClass = transaction.category === 'income' ? 'income' : 'expense';
             row.innerHTML = `
-                <td>${transaction.date}</td>
-                <td>${transaction.category}</td>
-                <td>${transaction.subCategory}</td>
-                <td>${transaction.description || '-'}</td>
-                <td class="transaction-amount ${amountClass}">₹${transaction.amount.toFixed(2)}</td>
-                <td class="action-buttons">
+                <td data-label="Date">${transaction.date}</td>
+                <td data-label="Category">${transaction.category}</td>
+                <td data-label="Sub-Category">${transaction.subCategory}</td>
+                <td data-label="Description">${transaction.description || '-'}</td>
+                <td data-label="Amount" class="transaction-amount ${amountClass}">₹${transaction.amount.toFixed(2)}</td>
+                <td data-label="Actions" class="action-buttons">
                     <button class="btn secondary edit-btn" data-id="${transaction.id}">Edit</button>
                     <button class="btn danger delete-btn" data-id="${transaction.id}">Delete</button>
                 </td>
@@ -341,10 +330,10 @@ class MoneyManager {
      * Binds all necessary event listeners for the application.
      */
     setupEventListeners() {
-        // Event listener for the main "Add New Transaction" button
+        // Main button to show the add transaction modal
         document.getElementById('add-transaction-btn').addEventListener('click', () => this.showModal());
 
-        // Event listeners for closing the modal
+        // Close modal button and clicking outside
         document.querySelector('.close-btn').addEventListener('click', () => this.hideModal());
         window.addEventListener('click', (event) => {
             if (event.target === document.getElementById('transaction-modal')) {
@@ -352,7 +341,7 @@ class MoneyManager {
             }
         });
 
-        // Event listener for the form submission
+        // Form submission logic
         document.getElementById('transaction-form').addEventListener('submit', (e) => {
             e.preventDefault();
             const formData = {
@@ -366,17 +355,15 @@ class MoneyManager {
             
             if (this.validateForm(formData)) {
                 if (formData.id) {
-                    // Update existing transaction if ID is present
                     this.updateTransaction(parseInt(formData.id), formData);
                 } else {
-                    // Add a new transaction if no ID is present
                     this.addTransaction(formData);
                 }
                 this.hideModal();
             }
         });
 
-        // Event delegation for the edit and delete buttons on the transaction table
+        // Event delegation for edit and delete buttons on the table
         document.getElementById('transaction-table-body').addEventListener('click', (e) => {
             const target = e.target;
             const transactionId = parseInt(target.dataset.id);
@@ -388,18 +375,19 @@ class MoneyManager {
             }
         });
 
-        // Event listeners for filter and sort controls to trigger re-rendering
+        // Filter and sort controls
         document.getElementById('category-filter').addEventListener('change', () => this.renderTransactions());
         document.getElementById('date-filter').addEventListener('change', () => this.renderTransactions());
         document.getElementById('sort-option').addEventListener('change', () => this.renderTransactions());
         
-        // Event listeners for dynamic sub-category population based on category selection
+        // Dynamic sub-category population
         document.getElementById('radio-income').addEventListener('change', (e) => this.populateSubCategories(e.target.value));
         document.getElementById('radio-expense').addEventListener('change', (e) => this.populateSubCategories(e.target.value));
     }
 }
 
-// Instantiate the app when the DOM is fully loaded to start the application
+// Instantiate the app when the DOM is ready
 document.addEventListener('DOMContentLoaded', () => {
     new MoneyManager();
 });
+
