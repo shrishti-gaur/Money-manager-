@@ -1,6 +1,6 @@
 // script.js
 // Use a robust key for localforage to avoid conflicts
-const DB_KEY = 'moneyManager_transactions';
+const DB_KEY = 'moneyManager_transactions' ;
 
 /**
  * Represents a single financial transaction.
